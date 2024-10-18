@@ -1,0 +1,125 @@
+@property --k {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: true;
+  }
+  * {
+    margin: 0;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -ms-scroll-snap-type: mandatory;
+        scroll-snap-type: mandatory;
+    -ms-scroll-snap-points-y: repeat(100vh);
+        scroll-snap-points-y: repeat(100vh);
+    -ms-scroll-snap-type: y mandatory;
+        scroll-snap-type: y mandatory;
+  }
+  
+  main, article, header {
+    display: grid;
+  }
+  
+  main {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    color: #dedede;
+    -webkit-animation: k 1s linear forwards;
+            animation: k 1s linear forwards;
+    animation-timeline: scroll();
+  }
+  main::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-75deg, transparent calc(50% - 2px), currentcolor calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 2px));
+    pointer-events: none;
+    content: "";
+  }
+  
+  article {
+    --par: 0;
+    --dif: var(--i) - var(--k);
+    --bit: clamp(0, var(--dif), 1);
+    --prv: clamp(0, var(--k) - var(--i), 1);
+    grid-area: 1/1;
+    grid-template-columns: 50% 50%;
+    position: sticky;
+    overflow: hidden;
+    height: 100vh;
+    text-align: center;
+    filter: drop-shadow(0 0 2px #040404) drop-shadow(0 0 3px #040404);
+    pointer-events: none;
+  }
+  article:nth-child(2n) {
+    --par: 1 ;
+  }
+  
+  @-webkit-keyframes k {
+    to {
+      --k: calc(var(--n) - 1) ;
+    }
+  }
+  
+  @keyframes k {
+    to {
+      --k: calc(var(--n) - 1) ;
+    }
+  }
+  header, figure {
+    --q: calc(1 - var(--p));
+    --s: calc(2*var(--p) - 1);
+    --x: 50vh*0.2679491924;
+    grid-area: 1/calc(var(--p) + 1);
+    margin: 0 calc(var(--q)*-1*var(--x)) 0 calc(var(--p)*-1*var(--x));
+    translate: calc(var(--bit)*var(--s)*2*var(--x)) calc(var(--bit)*var(--s)*-100%);
+    -webkit-clip-path: polygon(calc(var(--p)*2*var(--x)) 0, 100% 0, calc(100% - var(--q)*2*var(--x)) 100%, 0 100%);
+            clip-path: polygon(calc(var(--p)*2*var(--x)) 0, 100% 0, calc(100% - var(--q)*2*var(--x)) 100%, 0 100%);
+    transition: translate 1s ease-out;
+    pointer-events: auto;
+  }
+  
+  header {
+    --p: calc(1 - var(--par));
+    grid-gap: 1em;
+    padding: 0 calc(var(--q)*var(--x)) 0 calc(var(--p)*var(--x));
+    background: #212121;
+  }
+  
+  h2, em {
+    translate: 0 calc(var(--prv)*1.5em);
+    opacity: calc(1 - var(--prv));
+    transition: 1s ease-out;
+    transition-property: translate, opacity;
+  }
+  
+  h2 {
+    align-self: end;
+    font: 700 clamp(.75em, 8vw, 3em)/2 fuzzy bubbles, purisa, comic sans ms, cursive;
+    text-transform: capitalize;
+  }
+  
+  em {
+    font-size: 1.25em;
+  }
+  
+  figure {
+    --p: var(--par);
+    overflow: hidden;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    scale: calc(1 + .1*(1 - var(--prv)));
+    transition: scale 1s ease-out;
+  }
+  
+  div {
+    height: 100vh;
+    scroll-snap-align: start;
+    pointer-events: none;
+  }
